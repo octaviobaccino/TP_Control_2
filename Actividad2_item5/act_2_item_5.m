@@ -1,7 +1,7 @@
 clear; close all;
 
 %--------------------------------------------
-% Ejercicio 5 Trabajo Practico Pucheta
+% Ejercicio 5 Trabajo Practico Control 2
 %--------------------------------------------
 
 %% Metodo de la respuesta al escalon
