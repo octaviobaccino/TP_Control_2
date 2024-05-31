@@ -3,14 +3,14 @@ clear; close all; clc
 %--------------------------------------------------------------------------
 % Alumno: Octavio Baccino
 % Profesor: Julian Pucheta
-% Trabajo Pr·ctico 2
+% Trabajo Pr√°ctico 2
 %--------------------------------------------------------------------------
 % Caso de estudio 1. Sistema de tres variables de estado
 %--------------------------------------------------------------------------
-% -Asumiendo que no puede medirse directamente la corriente, pero sÌ la 
-% velocidad y el ·ngulo, proponer un controlador que logre el objetivo. 
-% -Determinar el efecto de la nolinealidad en la acciÛn de control, 
-% descripta en la Fig. 2, y verificar cu·l es el m·ximo valor admisible de Èsa no linealidad. 
+% -Asumiendo que no puede medirse directamente la corriente, pero s√≠ la 
+% velocidad y el √°ngulo, proponer un controlador que logre el objetivo. 
+% -Determinar el efecto de la nolinealidad en la acci√≥n de control, 
+% descripta en la Fig. 2, y verificar cu√°l es el m√°ximo valor admisible de √©sa no linealidad. 
 
 %% Disenio de controlador con observador
 
@@ -195,33 +195,30 @@ figure(2)
 subplot(2, 2, 1);
 hold on
 plot(t_v,ia);
-% plot(t_v,ia_o)
 hold off
 title('Corriente de armadura i_a');
-xlabel('Tiempo (seg.)');
-ylabel('Corriente (A)');
+xlabel('Tiempo [s]');
+ylabel('Corriente [A]');
 grid on;
 
 subplot(2, 2, 2);
 hold on
 plot(t_v,omega);
-% plot(t_v,omega_o)
 hold off
 title('Velocidad angular \omega_r');
-xlabel('Tiempo (seg.)');
-ylabel('Velocidad angular (rad/s)');
+xlabel('Tiempo [s]');
+ylabel('Velocidad angular [rad/s]');
 grid on;
 
 subplot(2, 2, 3);
 hold all
 plot(t_v,theta);
 plot(t_v,ref);
-% plot(t_v,TL_sim/1e-3/2);
-% plot(t_v,theta_o);
 hold off
 title('Poscion angular \theta_t');
-xlabel('Tiempo (seg.)');
-ylabel('Posicion angular (Rad)');
+xlabel('Tiempo [s]');
+ylabel('Posicion angular [Rad]');
+legend('\theta','ref');
 grid on;
 
 subplot(2, 2, 4);
@@ -229,7 +226,7 @@ hold on
 plot(t_v,u);
 hold off
 title('Accion de control u_t');
-xlabel('Tiempo (seg.)');
+xlabel('Tiempo [s]');
 ylabel('V');
 grid on;
 
@@ -240,7 +237,7 @@ hold on
 plot(t_v,TL_sim);
 hold off
 title('Torque de entrada TL');
-xlabel('Tiempo (seg.)');
+xlabel('Tiempo [s]');
 ylabel('Nm');
 grid on;
 
@@ -253,6 +250,28 @@ xlabel('rad/s');
 ylabel('rad');
 grid on;
 
+% Plots con observador
+figure(4)
 
+subplot(2,1,1);
+hold all
+plot(t_v,theta);
+plot(t_v,theta_o);
+hold off
+title('Poscion angular \theta_t');
+xlabel('Tiempo [s]');
+ylabel('\theta_t [rad]');
+legend('Sin obervador','Con observador');
+grid on;
 
+subplot(2,1,2);
+hold all
+plot(t_v,omega);
+plot(t_v,omega_o);
+hold off
+title('Velocidad angular \omega_t');
+xlabel('Tiempo [s]');
+ylabel('\omega_t [rad/s]');
+legend('Sin obervador','Con observador');
+grid on;
 
