@@ -67,7 +67,7 @@ Bo = C';
 Co = B';
 D = 0;
 
-Qo=diag([1e1 1e0 1e2]);    Ro=diag([1e-6 1e-4]);
+Qo=diag([1e1 1e0 1e2]);    Ro=diag([1e-6 1e-1]);
 
 Ko=lqr(Ao,Bo,Qo,Ro);
 
@@ -137,23 +137,35 @@ psi = zeros(1,length(t_v));
 psi(1)=0;
 integracion(1)=psi(1);
 
+y = zeros(1,length(t_v));
+y_o = zeros(1,length(t_v));
+
 for i=1:length(t_v)
     
     %------sin Observador----------------------
     
-    Y = C*estados;
+    Y = C*x;
     y(i)=Y(2,1);
     
     psi_p=ref(i) - y(i);
     psi(i)=integracion+psi_p*Ts;
     
-    u(i) = -Kamp(1:3)*estados-Kamp(4)*psi(i);
+    u(i) = -Kamp(1:3)*x-Kamp(4)*psi(i);
+    
+    % No linealidad del controlador
+%     if (u(i)<1) && (u(i)>-1)
+%         acc(i) = 0;
+%     else
+%         acc(i) = u(i);
+%     end
+    
     %Variables del sistema lineal
     ia(i)= x(1);
     omega(i)= x(2);
     theta(i)= x(3);
     
     x1_p=-Ra*x(1)/Laa-Km*x(2)/Laa+u(i)/Laa;
+%     x1_p=-Ra*x(1)/Laa-Km*x(2)/Laa+acc(i)/Laa;
     x2_p=Ki*x(1)/J-Bm*x(2)/J-TL_sim(i)/J;
     x3_p=x(2);
     
@@ -175,16 +187,11 @@ for i=1:length(t_v)
     omega_o(i)= xobs(2);
     theta_o(i)= xobs(3);
     
-%     y_sal_o(:,i) = C * estados_obs;
-%     y_sal(:,i)   = Ca(1:3,i) * estados + Ca()*integracion;
-%     x_hat_p     = A*xobs+B*u(i)+Ko*(y_sal(:,i)-y_sal_o(:,i));
-%     xobs       = xobs + x_hat_p*h;
-    
 %     %--------------------------------------------
     
-    estados=[ia(i);omega(i);theta(i)];
+%     estados=[ia(i);omega(i);theta(i)];
     integracion=psi(i);
-    estados_obs=[ia_o(i);omega_o(i);theta_o(i)];
+%     estados_obs=[ia_o(i);omega_o(i);theta_o(i)];
 end
 
 %% Plots
@@ -222,8 +229,9 @@ legend('\theta','ref');
 grid on;
 
 subplot(2, 2, 4);
-hold on
+hold all
 plot(t_v,u);
+% plot(t_v,acc);
 hold off
 title('Accion de control u_t');
 xlabel('Tiempo [s]');
