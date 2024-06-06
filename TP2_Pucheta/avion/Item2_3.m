@@ -3,17 +3,17 @@ clear; close all; clc
 %--------------------------------------------------------------------------
 % Alumno: Octavio Baccino
 % Profesor: Julian Pucheta
-% Trabajo Pr·ctico 2
+% Trabajo Pr√°ctico 2
 %--------------------------------------------------------------------------
 % Caso de estudio 2. Sistema de cuatro variables de estado
 %--------------------------------------------------------------------------
-% Õtem [2]
-% -Asumiendo que no puede medirse el ·ngulo ?, pero sÌ el ·ngulo ? y la 
+% √çtem [2]
+% -Asumiendo que no puede medirse el √°ngulo ?, pero s√≠ el √°ngulo ? y la 
 % altura, proponer un esquema que permita lograr el objetivo de control.
-% -Establecer el valor del tiempo de muestreo m·s adecuado para implementar 
-% el diseÒo en un sistema micro controlado.
-% -Determinar el efecto de la nolinealidad en la acciÛn de control, descripta 
-% en la Fig. 4, y verificar cu·l es el m·ximo valor admisible de la nolinealidad. 
+% -Establecer el valor del tiempo de muestreo m√°s adecuado para implementar 
+% el dise√±o en un sistema micro controlado.
+% -Determinar el efecto de la nolinealidad en la acci√≥n de control, descripta 
+% en la Fig. 4, y verificar cu√°l es el m√°ximo valor admisible de la nolinealidad. 
 %--------------------------------------------------------------------------
 
 %% Controlador en tiempo discreto
@@ -43,7 +43,7 @@ Dc = 0; % Matriz de transmision directa
 
 % Discretizacion del sistema
 
-Ts = 0.1;
+Ts = 0.01;
 % Ts = 0.05;
 
 sys_c = ss(Ac,Bc,Cc,Dc);
@@ -63,7 +63,7 @@ Aa = [A zeros(4,1); -C(2,:)*A 1]; % A discreta ampliada
 
 Ba = [B; -C(2,:)*B]; % B discreta amplaida
 
-Q = diag([1e-3 1e8 1e8 1e4 1e-2*30]);
+Q = diag([1e-3 1e8 1e9 1e4 1e-2*30]);
 
 R = 1e-0;
 
@@ -129,12 +129,10 @@ for i=1:round(tsim/Ts)
     
     Y = C*x; % salida real
     y(i) = Y(2,1);
-    ve = ref - y(i); %Ref no nula sÛlo para el desplazamiento
+    ve = ref - y(i); %Ref no nula s√≥lo para el desplazamiento
     ve_k = ve_k+ve;
     
     u(i)= -Ka(1:4)*xobs - Ka(5)*ve_k; % accion de control con observador
-    
-%     u(i)= -K*xobs + G*ref; % accion de control con observador
     
     % No linealidad del controlador
     alin = 0.001;
@@ -207,13 +205,12 @@ hold on;
 subplot(4,1,3);
 plot(t_v,u);
 grid on;
-title('AcciÛn de control');
-xlabel('Tiempo [s]');
+title('Acci√≥n de control');
 
 subplot(4,1,4);
 plot(t_v,acc);
 grid on;
-title('AcciÛn de control (acc)');
+title('Acci√≥n de control (acc)');
 xlabel('Tiempo [s]');
 
 % con Observador
@@ -247,13 +244,13 @@ xlabel('Tiempo [s]');
 % subplot(4,1,3);
 % plot(t_v,u);
 % grid on;
-% title('AcciÛn de control');
+% title('Acci√≥n de control');
 % % xlabel('Tiempo [s]');
 % 
 % subplot(4,1,4);
 % plot(t_v,acc);
 % grid on;
-% title('AcciÛn de control limitada');
+% title('Acci√≥n de control limitada');
 % xlabel('Tiempo [s]');
 
 
